@@ -5,6 +5,6 @@ int _printf(const char *format, ...);
 
 int print_char(int c);
 int print_str(char *str);
-int print_digit(int digit, int base);
+int print_digit(long digit, int base);
 
 #endif

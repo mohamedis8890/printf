@@ -12,9 +12,9 @@ int print_format(char specifier, va_list arg)
 	else if (specifier == 's')
 		count += print_str(va_arg(arg, char *));
 	else if (specifier == 'd' || specifier == 'i')
-		count += print_digit(va_arg(arg, int), 10);
+		count += print_digit((long)va_arg(arg, int), 10);
 	else if (specifier == 'x')
-		count += print_digit(va_arg(arg, int), 16);
+		count += print_digit((long)va_arg(arg, unsigned int), 16);
 	else
 		count += write(1, &specifier, 1);
 
