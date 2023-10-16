@@ -3,6 +3,15 @@
 #include <unistd.h>
 #include "main.h"
 
+/**
+  * print_format - selects the proper print function based on the
+  * specifier.
+  *
+  * @specifier: determines the type of data to be printed.
+  * @arg: a pointer to the arg containing the data.
+  *
+  * Return: the number of characters printed.
+  */
 int print_format(char specifier, va_list arg)
 {
 	int count = 0;
@@ -21,6 +30,13 @@ int print_format(char specifier, va_list arg)
 	return (count);
 }
 
+/**
+  * _printf - prints formatted string to the stdout.
+  *
+  * @format: the string to be formatted.
+  *
+  * Return: the number of characters printed.
+  */
 int _printf(const char *format, ...)
 {
 	int count = 0;
