@@ -1,64 +1,49 @@
-#include <stdarg.h>
-#include <stdio.h>
-#include <unistd.h>
 #include "main.h"
 
 /**
- * print_format - selects the proper print function based on the
- * specifier.
- *
- * @specifier: determines the type of data to be printed.
- * @arg: a pointer to the arg containing the data.
- *
- * Return: the number of characters printed.
- */
-int print_format(char specifier, va_list arg)
-{
-	int count = 0;
-
-	if (specifier == 'c')
-		count += print_char(va_arg(arg, int));
-	else if (specifier == 's')
-		count += print_str(va_arg(arg, char *));
-	else if (specifier == 'd' || specifier == 'i')
-		count += print_digit((long)va_arg(arg, int), 10);
-	else if (specifier == 'x')
-		count += print_digit((long)va_arg(arg, unsigned int), 16);
-	else if (specifier == 'o')
-		count += print_digit((long)va_arg(arg, unsigned int), 8);
-	else
-		count += write(1, &specifier, 1);
-
-	return (count);
-}
-
-/**
- * _printf - prints formatted string to the stdout.
- *
+ * _printf - prints anything
  * @format: the string to be formatted.
  *
- * Return: the number of characters printed.
+ * Return: number of bytes returned
  */
 int _printf(const char *format, ...)
 {
-	int count = 0;
-	va_list args;
+	int sum = 0;
+	va_list ap;
+	char *p, *start;
+	params_t params = PARAMS_INIT;
 
-	va_start(args, format);
+	va_start(ap, format);
 
-	while (*format != '\0')
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	for (p = (char *)format; *p; p++)
 	{
-		if (*format == '%')
+		init_params(&params, ap);
+		if (*p != '%')
 		{
-			count += print_format(*(++format), args);
+			sum += _putchar(*p);
+			continue;
 		}
+		start = p;
+		p++;
+		while (get_flag(p, &params))
+		{
+			p++;
+		}
+		p = get_width(p, &params, ap);
+		p = get_precision(p, &params, ap);
+		if (get_modifier(p, &params))
+			p++;
+		if (!get_specifier(p))
+			sum += print_from_to(start, p,
+					     params.l_modifier || params.h_modifier ? p - 1 : 0);
 		else
-			count += write(1, format, 1);
-
-		++format;
+			sum += get_print_func(p, ap, &params);
 	}
-
-	va_end(args);
-
-	return (count);
+	_putchar(BUF_FLUSH);
+	va_end(ap);
+	return (sum);
 }
