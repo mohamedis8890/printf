@@ -56,7 +56,7 @@ typedef struct parameters
 /**
  * struct specifier - struc token
  *
- * @specfier: format token
+ * @specifier: format token
  * @f: the function associated
  */
 typedef struct specifier
@@ -87,7 +87,7 @@ int get_print_func(char *s, va_list ap, params_t *params);
 int get_flag(char *s, params_t *params);
 int get_modifier(char *s, params_t *params);
 int get_width(char *s, params_t *params, va_list ap);
-	
+
 /* convert_number.c module */
 int print_hex(va_list ap, params_t *params);
 int print_HEX(va_list ap, params_t *params);
@@ -110,9 +110,9 @@ int print_number_left_shift(char *str, params_t *params);
 void init_params(params_t *params, va_list ap);
 
 /* string_fields.c module */
-char *get_precision(char *p, params_t *params,va_list ap);
+char *get_precision(char *p, params_t *params, va_list ap);
 
 /* _printf.c module */
-int _printf(const char *format,...);
+int _printf(const char *format, ...);
 
 #endif
